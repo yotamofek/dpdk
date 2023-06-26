@@ -103,7 +103,7 @@ mlx5_rx_replenish_bulk_mbuf(struct mlx5_rxq_data *rxq)
 		/* Not to cross queue end. */
 		n = RTE_MIN(n - MLX5_VPMD_DESCS_PER_LOOP, q_n - elts_idx);
 		if (rte_mempool_get_bulk(rxq->mp, (void *)elts, n) < 0) {
-			rxq->stats.rx_nombuf += n;
+			rte_panic("ARMADILLO ASSERTION!!! mlx5 failed to allocate mbuf in mlx5_rx_replenish_bulk_mbuf");
 			return;
 		}
 		if (unlikely(mlx5_mr_btree_len(&rxq->mr_ctrl.cache_bh) > 1)) {
@@ -167,7 +167,7 @@ mlx5_rx_mprq_replenish_bulk_mbuf(struct mlx5_rxq_data *rxq)
 		/* Limit replenish number to threshold value. */
 		n = RTE_MIN(n, rxq->rq_repl_thresh);
 		if (rte_mempool_get_bulk(rxq->mp, (void *)elts, n) < 0) {
-			rxq->stats.rx_nombuf += n;
+			rte_panic("ARMADILLO ASSERTION!!! mlx5 failed to allocate mbuf in mlx5_rx_mprq_replenish_bulk_mbuf");
 			return;
 		}
 		rxq->elts_ci += n;
@@ -241,7 +241,7 @@ rxq_copy_mprq_mbuf_v(struct mlx5_rxq_data *rxq,
 			rxq->stats.ibytes -= elts[i]->pkt_len;
 #endif
 			if (rxq_code == MLX5_RXQ_CODE_NOMBUF) {
-				++rxq->stats.rx_nombuf;
+				rte_panic("ARMADILLO ASSERTION!!! mlx5 failed to allocate mbuf in rxq_copy_mprq_mbuf_v");
 				break;
 			}
 			if (rxq_code == MLX5_RXQ_CODE_DROPPED) {

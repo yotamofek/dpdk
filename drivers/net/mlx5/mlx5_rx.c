@@ -852,7 +852,7 @@ mlx5_rx_burst(void *dpdk_rxq, struct rte_mbuf **pkts, uint16_t pkts_n)
 		/* Allocate the buf from the same pool. */
 		rep = rte_mbuf_raw_alloc(seg->pool);
 		if (unlikely(rep == NULL)) {
-			++rxq->stats.rx_nombuf;
+			rte_panic("ARMADILLO ASSERTION!!! mlx5 failed to allocate mbuf in mlx5_rx_burst");
 			if (!pkt) {
 				/*
 				 * no buffers before we even started,
@@ -1132,7 +1132,7 @@ mlx5_rx_burst_mprq(void *dpdk_rxq, struct rte_mbuf **pkts, uint16_t pkts_n)
 			    wq_mask));
 		pkt = rte_pktmbuf_alloc(rxq->mp);
 		if (unlikely(pkt == NULL)) {
-			++rxq->stats.rx_nombuf;
+			rte_panic("ARMADILLO ASSERTION!!! mlx5 failed to allocate mbuf in mlx5_rx_burst_mprq");
 			break;
 		}
 		len = (byte_cnt & MLX5_MPRQ_LEN_MASK) >> MLX5_MPRQ_LEN_SHIFT;
@@ -1148,7 +1148,7 @@ mlx5_rx_burst_mprq(void *dpdk_rxq, struct rte_mbuf **pkts, uint16_t pkts_n)
 				continue;
 			}
 			if (rxq_code == MLX5_RXQ_CODE_NOMBUF) {
-				++rxq->stats.rx_nombuf;
+				rte_panic("ARMADILLO ASSERTION!!! mlx5 failed to allocate mbuf in mlx5_rx_burst_mprq");
 				break;
 			}
 		}

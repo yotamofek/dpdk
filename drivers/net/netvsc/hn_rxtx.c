@@ -557,10 +557,7 @@ static void hn_rxpkt(struct hn_rx_queue *rxq, struct hn_rx_bufinfo *rxb,
 
 	m = rte_pktmbuf_alloc(rxq->mb_pool);
 	if (unlikely(!m)) {
-		struct rte_eth_dev *dev =
-			&rte_eth_devices[rxq->port_id];
-
-		dev->data->rx_mbuf_alloc_failed++;
+		rte_panic("ARMADILLO ASSERTION!!! netvsc failed to allocate mbuf in hn_rxpkt");
 		return;
 	}
 
